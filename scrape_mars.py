@@ -37,6 +37,7 @@ def scrape():
 	soup = BeautifulSoup(response.text, 'html.parser')
 	latest_tweet_container = soup.find('div', class_="js-tweet-text-container")
 	mars_weather = latest_tweet_container.p.text
+	mars_weather = mars_weather.split('@')[0]
 	results_dict['mars_weather'] = mars_weather
 
 	#get mars profile data and display as HTML table
@@ -44,8 +45,8 @@ def scrape():
 	url = 'https://space-facts.com/mars/'
 	tables = pd.read_html(url)
 	marsprofile_df = tables[0]
-	marsprofile_df.columns = ['attribute','value']
-	html_table = marsprofile_df.to_html()
+	marsprofile_df.columns = ['Attribute','Value']
+	html_table = marsprofile_df.to_html(index=False)
 	html_table.replace('\n', '')
 	results_dict['mars_profile_table'] = html_table
 
